@@ -1,0 +1,12 @@
+{
+  "name": "decisionfocus",
+  "private": true,
+  "version": "0.0.0",
+  "browserslist": "defaults, ie >= 10",
+  "devDependencies": {
+    "cypress": "^3.3.2"
+  },
+  "scripts": {
+    "e2e": "cypress open"
+  }
+}
