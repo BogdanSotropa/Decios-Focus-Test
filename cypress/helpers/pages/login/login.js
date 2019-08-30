@@ -5,6 +5,11 @@ class Login {
         this.url = "https://next.decisionfocus.com/";
     }
 
+    /**
+     * Verify that user is able to connect with valid data
+     * @param email - user email
+     * @param password - user password
+     */
     assertUserIsAbleToSignInWithValidData(email, password) {
         this.typeEmail(email)
         this.typePassword(password)
@@ -17,6 +22,11 @@ class Login {
         return this;
     }
 
+    /**
+     * Verify that user is not able to connect with invalid data
+     * @param email - user email
+     * @param password - user password
+     */
     assertUserIsNotAbleToSignInWithInvalidData(email, password) {
         this.typeEmail(email)
         this.typePassword(password)
@@ -29,6 +39,9 @@ class Login {
         return this;
     }
 
+    /**
+    * Verify that user is in Workspace Page
+    */
     assertThatUserIsInWorspacePage() {
         cy
             .get('.main-left-menu')
@@ -40,6 +53,9 @@ class Login {
         return this;
     }
 
+    /**
+     * Verify that user is in Login Page
+     */
     assertThatUserIsInLoginModal() {
         cy
             .get('#loginForm')
@@ -50,6 +66,9 @@ class Login {
         return this;
     }
 
+    /**
+     * Verify that user is in Forgot Password Modal
+     */
     assertThatUserIsRedirectedToForgotPasswordModal() {
         cy
             .get('.btn-reset-link')
@@ -59,6 +78,9 @@ class Login {
         return this;
     }
 
+    /**
+     * Go back to Login Page by pressing Back to Login link
+     */
     selectBacktoLogin() {
         cy
             .get('.btn-link')
@@ -68,6 +90,9 @@ class Login {
         return this;
     }
 
+    /**
+     * Go to Forgot Password modal by pressing Forgot Password link
+     */
     selectForgotPassword() {
         cy
             .get('.btn-link')
@@ -77,7 +102,10 @@ class Login {
         return this;
     }
 
-    selectSingnIn() {
+    /**
+     * Select SignIn by pressing Sign In button
+     */
+    selectSignIn() {
         cy
             .get('.btn-success')
             .click();
@@ -85,6 +113,10 @@ class Login {
         return this;
     }
 
+    /**
+     * Sign In by pressing Sign In button
+     * 
+     */
     signInButton() {
         cy
             .get('.btn-login')
@@ -93,6 +125,10 @@ class Login {
         return this;
     }
 
+    /**
+     * Type user email
+     * @param email - user email
+     */
     typeEmail(email) {
         cy
             .get('#email')
@@ -101,6 +137,10 @@ class Login {
         return this;
     }
 
+    /**
+     * Type user password
+     * @param password - user password
+     */
     typePassword(password) {
         cy
             .get('#password')

@@ -11,7 +11,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertUserIsAbleToSignInWithValidData('catalin.cobzaru@spin-software.com', 'D3cision!!');
   });
 
@@ -19,7 +19,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertUserIsNotAbleToSignInWithInvalidData(" ", " ");
   });
 
@@ -27,7 +27,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertUserIsNotAbleToSignInWithInvalidData('talin.cobzaru@spin-software.com', 'D3cion!!');
   });
 
@@ -35,7 +35,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertUserIsNotAbleToSignInWithInvalidData('talin.cobzaru@spin-software.com', 'D3cision!!');
   });
 
@@ -43,7 +43,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertUserIsNotAbleToSignInWithInvalidData('catalin.cobzaru@spin-software.com', '3cihbjgg');
   });
 
@@ -51,7 +51,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .selectForgotPassword()
       .assertThatUserIsRedirectedToForgotPasswordModal();
   });
@@ -60,7 +60,7 @@ describe('Login Settings', function () {
 
     login
       .visit()
-      .selectSingnIn()
+      .selectSignIn()
       .assertThatUserIsInLoginModal();
   });
 });
