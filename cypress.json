@@ -1,5 +1,5 @@
 {
-    "integrationFolder": "test/cypress/integration",
+    "integrationFolder": "cypress/integration",
     "modifyObstructiveCode": false,
     "viewportHeight": 1080,
     "viewportWidth": 1920,
