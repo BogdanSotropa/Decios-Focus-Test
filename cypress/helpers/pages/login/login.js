@@ -1,51 +1,53 @@
+import BasePage from '../../basePage';
 
-class Login {
+class Login extends BasePage {
     constructor() {
+        super();
+        this.locators = {
+            emailInput: '#email',
+            emailLabel: '#email-label',
+            helpLink: '.btn-link',
+            optionSignIn: '.btn-success',
+            loginButton: '.btn-login',
+            loginForm: '#loginForm',
+            passwordInput: '#password',
+            resetLink: '.btn-reset-link'
+        };
 
-        this.url = "https://next.decisionfocus.com/";
+        this.url = 'https://demo.decisionfocus.com/workspace/fb35bafe4e88d618e852bf985f00f892/dashboard/fb35bafe4e88d618e852bf985f00f892/fb35bafe4e88d618e852bf985f0d0e1e';
     }
 
     /**
-     * Verify that user is able to connect with valid data
-     * @param email - user email
-     * @param password - user password
+     * Assert user connection successfully
      */
-    assertUserIsAbleToSignInWithValidData(email, password) {
-        this.typeEmail(email)
-        this.typePassword(password)
-        this.signInButton()
+    assertUserConnectionSuccessfully() {
         this.assertThatUserIsInWorspacePage()
         cy
             .url()
-            .should('eq', 'https://next.decisionfocus.com/myworkspaces')
+            .should('eq', 'https://demo.decisionfocus.com/workspace/fb35bafe4e88d618e852bf985f00f892/dashboard/fb35bafe4e88d618e852bf985f00f892/fb35bafe4e88d618e852bf985f0d0e1e')
 
         return this;
     }
 
     /**
-     * Verify that user is not able to connect with invalid data
-     * @param email - user email
-     * @param password - user password
+     * Assert user connection failed
      */
-    assertUserIsNotAbleToSignInWithInvalidData(email, password) {
-        this.typeEmail(email)
-        this.typePassword(password)
-        this.signInButton()
-        this.assertThatUserIsInLoginModal()
+    assertUserConnectionFailed() {
+        this.assertThatUserIsInLoginModule()
         cy
             .url()
-            .should('eq', 'https://next.decisionfocus.com/')
+            .should('eq', 'https://demo.decisionfocus.com/')
 
         return this;
     }
 
     /**
-    * Verify that user is in Workspace Page
-    */
+     * Assert that user is in Workspace Page
+     */
     assertThatUserIsInWorspacePage() {
         cy
-            .get('.main-left-menu')
-            .find('.list-header')
+            .get(this.basicLocators.mainLeftMenu)
+            .find(this.basicLocators.listLeftMenu)
             .first()
             .should('exist')
             .and('have.text', 'Administrate')
@@ -56,10 +58,10 @@ class Login {
     /**
      * Verify that user is in Login Page
      */
-    assertThatUserIsInLoginModal() {
+    assertThatUserIsInLoginModule() {
         cy
-            .get('#loginForm')
-            .find('#email-label')
+            .get(this.locators.loginForm)
+            .find(this.locators.emailLabel)
             .should('exist')
             .and('have.text', 'Email')
 
@@ -67,11 +69,11 @@ class Login {
     }
 
     /**
-     * Verify that user is in Forgot Password Modal
+     * Verify that user is in Forgot Password Module
      */
-    assertThatUserIsRedirectedToForgotPasswordModal() {
+    assertThatUserIsRedirectedToForgotPasswordModule() {
         cy
-            .get('.btn-reset-link')
+            .get(this.locators.resetLink)
             .should('exist')
             .and('have.text', 'Send Reset Link')
 
@@ -79,11 +81,36 @@ class Login {
     }
 
     /**
-     * Go back to Login Page by pressing Back to Login link
+     * Logout user from workspace page
      */
-    selectBacktoLogin() {
+    logoutUser() {
         cy
-            .get('.btn-link')
+            .get(this.basicLocators.dropdownUser)
+            .click()
+            .find(this.basicLocators.logoutButton)
+            .click()
+
+        return this;
+    }
+
+    /** Perform SignIn by typing email paasword and press Sign In button
+     * @param email - user email
+     * @param password - user password
+     */
+    performSignIn(email, password) {
+        this.typeEmail(email)
+            .typePassword(password)
+            .pressSignInButton()
+
+        return this;
+    }
+
+    /**
+     * Go back to Sign In Page by pressing Back to Login link
+     */
+    pressBacktoLoginLink() {
+        cy
+            .get(this.locators.helpLink)
             .last()
             .click()
 
@@ -91,11 +118,11 @@ class Login {
     }
 
     /**
-     * Go to Forgot Password modal by pressing Forgot Password link
+     * Go to Forgot Password module by pressing Forgot Password link
      */
-    selectForgotPassword() {
+    pressForgotPasswordLink() {
         cy
-            .get('.btn-link')
+            .get(this.locators.helpLink)
             .first()
             .click()
 
@@ -103,11 +130,11 @@ class Login {
     }
 
     /**
-     * Select SignIn by pressing Sign In button
+     * Select Sign In by pressing Sign In button
      */
-    selectSignIn() {
+    pressSignInWithEmailOption() {
         cy
-            .get('.btn-success')
+            .get(this.locators.optionSignIn)
             .click();
 
         return this;
@@ -115,11 +142,10 @@ class Login {
 
     /**
      * Sign In by pressing Sign In button
-     * 
      */
-    signInButton() {
+    pressSignInButton() {
         cy
-            .get('.btn-login')
+            .get(this.locators.loginButton)
             .click();
 
         return this;
@@ -131,7 +157,7 @@ class Login {
      */
     typeEmail(email) {
         cy
-            .get('#email')
+            .get(this.locators.emailInput)
             .type(email);
 
         return this;
@@ -143,7 +169,7 @@ class Login {
      */
     typePassword(password) {
         cy
-            .get('#password')
+            .get(this.locators.passwordInput)
             .type(password);
 
         return this;
@@ -151,7 +177,7 @@ class Login {
 
     visit() {
         cy
-            .visit(this.url)
+            .visit(this.url);
 
         return this;
     }
