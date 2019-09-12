@@ -8,5 +8,8 @@
   },
   "scripts": {
     "e2e": "cypress open"
+  },
+  "dependencies": {
+    "cypress-file-upload": "^3.3.3"
   }
 }

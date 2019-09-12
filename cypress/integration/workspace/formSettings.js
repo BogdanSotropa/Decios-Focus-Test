@@ -1,16 +1,18 @@
 'use strict';
 
-import CreateForm from "../../helpers/pages/workspace/createFormModal/createForm";
+import FormSettings from "../../helpers/pages/workspace/formSettings/formSettings";
 import Login from "../../helpers/pages/login/login"
 import LeftSideMenu from "../../helpers/pages/workspace/leftSideMenu/leftSideMenu";
 import TablePage from "../../helpers/pages/workspace/table/tablePage";
+import AssessmentForm from "../../helpers/pages/workspace/formSettings/assessmentForm";
 
-describe('Main Form Settings', function () {
+describe('Form Settings', function () {
 
-    const createForm = new CreateForm(),
+    const formSettings = new FormSettings(),
         login = new Login(),
         leftSideMenu = new LeftSideMenu(),
-        tablePage = new TablePage();
+        tablePage = new TablePage(),
+        assessmentForm = new AssessmentForm();
 
     beforeEach(function () {
         login
@@ -19,34 +21,60 @@ describe('Main Form Settings', function () {
             .performSignIn('catalin.cobzaru@spin-software.com', 'D3cision!!')
     });
 
-    xit('Create New Form', function () {
+    it('Create New Form', function () {
+
         leftSideMenu
-            .clickTablesOption()
-            .selectItemFromTablesList('ADD')
-        createForm
+            .clickTabelsOption()
+            .selectItemFromTabelsList('ADD')
+        formSettings
+            .clickFormContainers('empty header')
             .addFormTitle('Title Test')
             .addFormDescription('Description', 'Description Test')
+            .clickFormContainers('header1')
+            .dropFileContainer()
             .selectChoiceButtonsOption('Choice buttons', 'choice3')
             .addFormComment('Comments', 'Comment test')
-            .addFormNumber('Numbers', '2')
+            .addFormNumbers('Numbers', '2')
             .createForm();
         leftSideMenu
-            .selectItemFromTablesList('table');
+            .selectItemFromTabelsList('table');
         tablePage
-            .assertFormExistInTablePage('Title Test');
+            .assertThatFormExistInTablePage('Title Test', true);
     });
 
     it('Check the new created form contains the correct data', function () {
         leftSideMenu
-            .clickTablesOption()
-            .selectItemFromTablesList('table');
+            .clickTabelsOption()
+            .selectItemFromTabelsList('table');
+        tablePage
+            .assertThatTitleExistInTableRow('Title Test')
+            .assertThatDescriptionExistInTableRow('Title Test', 'Description Test')
+            .assertThatCreatorExistInTableRow('Title Test', 'Catalin Cobzaru')
+            .assertCreatedDateExistInTableRow('Title Test')
+            .assertLastChangedDateExistInTableRow('Title Test')
+            .assertLastChangedByExistInTableRow('Title Test', 'Catalin Cobzaru')
+            .clickPreviewButton('Title Test')
+        assessmentForm
+            .assertFormTitle('Title Test')
+            .assertFormDescription('Description', 'Description Test')
+            .assertChoiceButtonsOption('Choice buttons', 'choice3')
+            .assertFormFile('testFile.txt')
+            .assertFormComment('Comments', 'Comment test')
+            .assertFormNumbers('Numbers', '2')
+    });
+
+    it('Delete form and check that form was deleted from table page', function () {
+        leftSideMenu
+            .clickTabelsOption()
+            .selectItemFromTabelsList('table');
         tablePage
             .clickPreviewButton('Title Test')
-            // .clickButton()
-            .assertFormTitleIsCorrect('Title Test')
-            .assertFormDescriptionIsCorrect('Description Test')
-            .assertDropdownSelectorHaveCorrectValue('choice3')
-            .assertNumbersInputFieldHaveCorrectValue('2')
+        formSettings
+            .deleteForm()
+        leftSideMenu
+            .selectItemFromTabelsList('table');
+        tablePage
+            .assertThatFormExistInTablePage('Title Test', false)
     });
 
 });

@@ -12,7 +12,7 @@ class LeftSideMenu extends BasePage {
     /**
      * Select option from Tables dropdown list
      */
-    selectItemFromTablesList(item) {
+    selectItemFromTabelsList(item) {
         cy
             .get(this.locators.tablesOption)
             .contains(item)
@@ -25,7 +25,7 @@ class LeftSideMenu extends BasePage {
     /**
      * Click on Tables from left side menu
      */
-    clickTablesOption() {
+    clickTabelsOption() {
         cy
             .get(this.locators.tablesOption)
             .click();

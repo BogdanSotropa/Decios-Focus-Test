@@ -8,11 +8,10 @@ class BasePage {
             listLeftMenu: '.list-header',
             logoutButton: '.logout-button-li',
             mainLeftMenu: '.main-left-menu',
-            textareaInput: '.note-editable',
+            textareaContainer: '.note-editable',
             numberInputField: '.form-control'
         };
     }
-
     constructor() {
         this.basicLocators = BasePage.generalLocators;
     }

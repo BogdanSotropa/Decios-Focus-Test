@@ -1,104 +1,135 @@
-import BasePage from "../../../basePage"
+import BasePage from "../../../basePage";
+import FormModule from "../formSettings/assessmentForm";
 
 class TablePage extends BasePage {
     constructor() {
         super();
         this.locators = {
-            buttonPreview: '.hover-show',
-            tableRow: '#376aaefd0d14787157516e9cdb4ad3b6',
-            rowTitleContainer: '.sorting_1',
-            dropdownValue: '.chosen-single'
+            previewButton: '.hover-show',
+            tableRow: '.odd, .even',
+            titleContainer: '.sorting_1',
         };
     };
 
     /**
      * Assert that form exist in table page
-     * @param {String} formTitle 
+     * @param {String} formTitle - form title
+     * @param status - boolean, checked or not
      */
-    assertFormExistInTablePage(formTitle) {
-        this.getFormRow(formTitle)
-            .should('exist');
+    assertThatFormExistInTablePage(formTitle, status) {
+        this.getTableRow(formTitle)
+            .should(status ? 'exist' : 'not.exist');
 
         return this;
     }
 
     /**
-     * Get Form Row and hover until appear Preview Button and click the that button
+     * Assert created date exist in table row
+     * @param {String} formTitle - form title
+     */
+    assertCreatedDateExistInTableRow(formTitle) {
+        const createdDate = Cypress.moment().format('YYYY-MM-DD')
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(3)
+            .should('contain', createdDate)
+
+        return this;
+    }
+
+    /**
+     * Assert last changed date exist in table row
+     * @param {String} formTitle - form title
+     */
+    assertLastChangedDateExistInTableRow(formTitle) {
+        const lastChangedDate = Cypress.moment().format('YYYY-MM-DD')
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(4)
+            .should('contain', lastChangedDate)
+
+        return this;
+    }
+
+    /**
+     * Assert last changed by exist in table row
+     * @param {String} formTitle - form title
+     * @param {String} lastChangedBy
+     */
+    assertLastChangedByExistInTableRow(formTitle, lastChangedBy) {
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(5)
+            .should('contain', lastChangedBy)
+
+        return this;
+    }
+
+    /**
+     * Assert that form creator exist in table row
+     * @param {String} formTitle - form title
+     * @param {String} formCreator - form creator
+     */
+    assertThatCreatorExistInTableRow(formTitle, formCreator) {
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(2)
+            .should('contain', formCreator)
+
+        return this;
+    }
+
+    /**
+     * Assert that form description exist in table row
+     * @param {String} formTitle - form title
+     * @param {String} formDescription - form description
+     */
+    assertThatDescriptionExistInTableRow(formTitle, formDescription) {
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(1)
+            .should('contain', formDescription)
+
+        return this;
+    }
+
+    /**
+     * Assert that form title exist in table row
+     * @param {String} formTitle - form title
+     */
+    assertThatTitleExistInTableRow(formTitle) {
+        this.getTableRow(formTitle)
+            .find('td')
+            .eq(0)
+            .contains(formTitle)
+
+        return this;
+    }
+
+    /**
+     * Get Form Row and hover until appear Preview Button and click the button
      * @param {String} formTitle - form title
      */
     clickPreviewButton(formTitle) {
-        this.getFormRow(formTitle)
+        this.getTableRow(formTitle)
             .trigger('mouseover')
-            .parent()
-            .parent()
-            .find(this.locators.buttonPreview)
+            .find(this.locators.previewButton)
             .click()
 
-        return this;
-    }
-    clickButton() {
-        cy
-            .get(this.locators.buttonPreview)
-            .click()
-
-        return this;
-    }
-
-    /**
-     * Assert that form title is correct 
-     * @param {String} formTitle - form title
-     */
-    assertFormTitleIsCorrect(formTitle) {
-        cy
-            .get(this.basicLocators.formTitle)
-            .should('have.value', formTitle);
-
-        return this;
-    }
-
-    /**
-     * Assert that form title is correct 
-     * @param {String} dropdownListValue - form title
-     */
-    assertDropdownSelectorHaveCorrectValue(dropdownListValue) {
-        cy
-            .get(this.locators.dropdownValue)
-            .first()
-            .should('contain', dropdownListValue);
-
-        return this;
-    }
-
-    /**
-     * Assert that form description is correct 
-     * @param {String} formDescription - form description
-     */
-    assertFormDescriptionIsCorrect(formDescription) {
-        cy
-            .get(this.basicLocators.textareaInput).first()
-            .should('have.text', formDescription);
-
-        return this;
-    }
-    assertNumbersInputFieldHaveCorrectValue(number) {
-        cy
-            .get(this.basicLocators.numberInputField)
-            .last()
-            .should('have.value', number);
-
-        return this;
+        return new FormModule();
     }
 
     /**
      * Get Form Row
      * @param {String} formTitle - form title
      */
-    getFormRow(formTitle) {
+    getTableRow(formTitle) {
         return cy
-            .get(this.locators.tableRow)
-            .find(this.locators.rowTitleContainer)
-            .contains(formTitle)
+            .get(this.locators.titleContainer)
+            .contains(this.locators.titleContainer, formTitle)
+            .parent()
     }
+
 }
 
 export default TablePage;
